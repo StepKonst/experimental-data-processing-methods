@@ -5,30 +5,37 @@ from model import Model
 
 
 def main():
-    st.title("Trend Data Visualization")
+    st.title("Визуализация данных трендов")
+    
+    st.sidebar.title("📈 Тренды")
 
     model = Model()
 
-    trend_type = st.selectbox(
-        "Type", ["Linear Up", "Linear Down", "Nonlinear Up", "Nonlinear Down"]
+    trend_type = st.sidebar.selectbox(
+        "Выберите тип тренда", [
+            "Линейно восходящий тренд",
+            "Линейно нисходящий тренд",
+            "Нелинейно восходящий тренд",
+            "Нелинейно нисходящий тренд"
+        ]
     )
     a_value = st.slider(
-        "Enter 'a' value", min_value=0.01, max_value=1.0, step=0.01, value=0.1
+        "Выберите значение \"a\"", min_value=0.01, max_value=1.0, step=0.01, value=0.1
     )
     b_value = st.slider(
-        "Enter 'b' value", min_value=0.01, max_value=1.0, step=0.01, value=0.1
+        "Выберите значение \"b\"", min_value=0.01, max_value=1.0, step=0.01, value=0.1
     )
     N_value = st.slider(
-        "Enter 'N' value", min_value=1, max_value=1000, step=1, value=100
+        "Выберите значение \"N\"", min_value=1, max_value=1000, step=1, value=100
     )
 
     t, data = model.trend(trend_type, a_value, b_value, N_value)
 
-    st.subheader("Trend Data:")
+    st.subheader("Данные о тенденциях:")
     st.line_chart(data)
 
-    st.subheader("Trend Data Table:")
-    st.write(pd.DataFrame({"Time": t, "Data": data}))
+    st.sidebar.subheader("Таблица данных тренда:")
+    st.sidebar.dataframe(pd.DataFrame({"Время": t, "Data": data}), width=300)
 
 
 if __name__ == "__main__":

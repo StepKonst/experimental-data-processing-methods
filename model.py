@@ -3,14 +3,14 @@ import numpy as np
 
 class Model:
     def trend(self, type, a, b, N):
-        t = np.arange(0, N)
+        time_values = np.arange(0, N)
 
         trend_dict = {
-            "Linear Up": a * t + b,
-            "Linear Down": -a * t + b,
-            "Nonlinear Up": b * np.exp(a * t),
-            "Nonlinear Down": b * np.exp(-a * t),
+            "Линейно восходящий тренд": a * time_values + b,
+            "Линейно нисходящий тренд": -a * time_values + b,
+            "Нелинейно восходящий тренд": b * np.exp(a * time_values),
+            "Нелинейно нисходящий тренд": b * np.exp(-a * time_values),
         }
 
-        x = trend_dict.get(type)
-        return t, x
+        trend_values = trend_dict.get(type)
+        return time_values, trend_values
