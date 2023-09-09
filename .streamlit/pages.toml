@@ -1,0 +1,14 @@
+[[pages]]
+name = "Trends"
+icon = "📈"
+is_section = true
+
+[[pages]]
+path = "app/main.py"
+name = "Trend"
+icon = "👑"
+
+[[pages]]
+path = "app/combined_trends.py"
+name = "Combined"
+icon = "🌀"
