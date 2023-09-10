@@ -1,8 +1,11 @@
 import numpy as np
+from typing import Tuple, List
 
 
 class Model:
-    def trend(self, type, a, b, N):
+    def trend(
+        self, type: str, a: float, b: float, N: int
+    ) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
 
         trend_dict = {
@@ -15,11 +18,21 @@ class Model:
         trend_values = trend_dict.get(type)
         return time_values, trend_values
 
-    def combined_trend(self, type1, a1, b1, type2, a2, b2, N):
-        time_values1, trend_values1 = self.trend(type1, a1, b1, N // 2)
-        time_values2, trend_values2 = self.trend(type2, a2, b2, N // 2)
+    def combined_trend(
+        self, types: List[str], a: int, b: int, N: int
+    ) -> Tuple[np.ndarray, np.ndarray]:
+        time_values = np.arange(0, N)
+        combined_trend_values = np.zeros(N)
 
-        combined_time_values = time_values1 + time_values2
-        combined_trend_values = trend_values1 + trend_values2
+        if len(types) == 0:
+            return np.array([0]), np.array([0])
 
-        return combined_time_values, combined_trend_values
+        combined_trend_values = np.array_split(combined_trend_values, len(types))
+
+        for i, trend_type in enumerate(types):
+            _, trend_values = self.trend(
+                trend_type, a, b, len(combined_trend_values[i])
+            )
+            combined_trend_values[i] += trend_values
+
+        return time_values, np.concatenate(combined_trend_values, axis=0)
