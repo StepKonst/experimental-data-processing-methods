@@ -36,3 +36,22 @@ class Model:
             combined_trend_values[i] += trend_values
 
         return time_values, np.concatenate(combined_trend_values, axis=0)
+
+    def noise(self, N: int, R: float):
+        time_values = np.arange(0, N)
+        noise_values = np.random.uniform(-R, R, size=N)
+
+        x_min = np.min(noise_values)
+        x_max = np.max(noise_values)
+
+        data = ((noise_values - x_min) / (x_max - x_min) - 0.5) * 2 * R
+
+        return time_values, data
+
+    def my_noise(self, N: int, R: float):
+        time_values = np.arange(0, N)
+        noise_values = np.random.uniform(-R, R, size=N)
+        # Нужно исправить! Есть тренд!!!
+        data = [noise + time for noise, time in zip(noise_values, time_values)]
+
+        return time_values, data
