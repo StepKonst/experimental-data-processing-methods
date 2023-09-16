@@ -4,6 +4,11 @@ name = "Главная"
 icon = "🏠"
 
 [[pages]]
+path = "app/noise.py"
+name = "Шум"
+icon = "🎧"
+
+[[pages]]
 name = "Тренды"
 icon = "📈"
 is_section = true
