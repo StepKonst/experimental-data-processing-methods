@@ -1,19 +1,25 @@
+import os
+import sys
+
 import pandas as pd
 import streamlit as st
-from model import Model
 from st_pages import add_page_title, show_pages_from_config
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+import model
 
 add_page_title()
 
 show_pages_from_config()
 
 
-st.title("Визуализация данных трендов")
+st.title("Комбинированная визуализация данных трендов")
 
-model = Model()
+model = model.Model()
 
-trend_type = st.sidebar.selectbox(
-    "Выберите тип тренда",
+trend_type = st.sidebar.multiselect(
+    "Выберите два, три или даже четыре тренда",
     [
         "Линейно восходящий тренд",
         "Линейно нисходящий тренд",
@@ -31,9 +37,9 @@ N_value = st.slider(
     'Выберите значение "N"', min_value=1, max_value=1000, step=1, value=100
 )
 
-t, data = model.trend(trend_type, a_value, b_value, N_value)
+t, data = model.combined_trend(trend_type, a_value, b_value, N_value)
 
-st.subheader("Данные o тенденциях:")
+st.subheader("Данные о тенденциях:")
 st.line_chart(data)
 
 st.sidebar.subheader("Таблица данных тренда:")

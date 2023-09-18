@@ -1,3 +1,5 @@
+__all__ = ["Model"]
+
 import numpy as np
 from typing import Tuple, List
 
@@ -37,7 +39,7 @@ class Model:
 
         return time_values, np.concatenate(combined_trend_values, axis=0)
 
-    def noise(self, N: int, R: float):
+    def noise(self, N: int, R: float) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
         noise_values = np.random.uniform(-R, R, size=N)
 
@@ -48,10 +50,10 @@ class Model:
 
         return time_values, data
 
-    def my_noise(self, N: int, R: float):
+    def my_noise(self, N: int, R: float) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
         noise_values = np.random.uniform(-R, R, size=N)
-        # Нужно исправить! Есть тренд!!!
-        data = [noise + time for noise, time in zip(noise_values, time_values)]
+
+        data = (noise_values - 1.5) * 10 * R
 
         return time_values, data

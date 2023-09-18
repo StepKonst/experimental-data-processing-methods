@@ -1,6 +1,12 @@
+import os
+import sys
+
 import streamlit as st
-from model import Model
 from st_pages import add_page_title, show_pages_from_config
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+import model
 
 add_page_title()
 
@@ -8,7 +14,7 @@ show_pages_from_config()
 
 st.title("Визуализация данных случайного шума")
 
-model = Model()
+model = model.Model()
 
 N_value = st.slider(
     'Выберите значение "N"', min_value=1, max_value=10000, step=1, value=1000
@@ -24,6 +30,8 @@ time_values_me, data_me = model.my_noise(N_value, R_value)
 st.markdown("## Данные для случайного шума:")
 st.line_chart(data)
 
-st.markdown("## Данные для случайного шума с использованием несложного генератора случайных чисел:")
+st.markdown(
+    "## Данные для случайного шума с использованием несложного генератора случайных чисел:"
+)
 
 st.line_chart(data_me)

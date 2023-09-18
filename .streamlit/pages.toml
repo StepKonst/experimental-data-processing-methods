@@ -1,10 +1,10 @@
 [[pages]]
-path = "app/main.py"
+path = "app/pages/main.py"
 name = "Главная"
 icon = "🏠"
 
 [[pages]]
-path = "app/noise.py"
+path = "app/pages/noise.py"
 name = "Шум"
 icon = "🎧"
 
@@ -14,11 +14,11 @@ icon = "📈"
 is_section = true
 
 [[pages]]
-path = "app/trends.py"
+path = "app/pages/trends.py"
 name = "Графики трендов"
 icon = "📊"
 
 [[pages]]
-path = "app/combined_trends.py"
+path = "app/pages/combined_trends.py"
 name = "Комбинированные тренды"
 icon = "⭐️"
