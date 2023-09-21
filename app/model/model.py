@@ -1,7 +1,9 @@
 __all__ = ["Model"]
 
+import random
+from typing import List, Tuple
+
 import numpy as np
-from typing import Tuple, List
 
 
 class Model:
@@ -52,8 +54,11 @@ class Model:
 
     def my_noise(self, N: int, R: float) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
-        noise_values = np.random.uniform(-R, R, size=N)
-
-        data = (noise_values - 1.5) * 10 * R
+        noise_values = np.array([random.random() * 2 - 1 for _ in range(N)]) * R
+        data = noise_values
 
         return time_values, data
+
+    def shift(self, inData: np.ndarray, C: float, N1: int, N2: int) -> np.ndarray:
+        inData[N1:N2] += C
+        return inData
