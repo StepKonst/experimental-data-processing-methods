@@ -29,7 +29,7 @@ class Model:
         combined_trend_values = np.zeros(N)
 
         if len(types) == 0:
-            return np.array([0]), np.array([0])
+            return None, None
 
         combined_trend_values = np.array_split(combined_trend_values, len(types))
 
@@ -62,3 +62,13 @@ class Model:
     def shift(self, inData: np.ndarray, C: float, N1: int, N2: int) -> np.ndarray:
         inData[N1:N2] += C
         return inData
+
+    def spiles(self, N: int, M: int, R: float, Rs: float) -> Tuple[np.ndarray, dict]:
+        data = np.zeros(N + 1)
+        positions = random.sample(range(N), M)
+        sign = np.random.choice([-1, 1], M)
+        amplitude = Rs * sign
+        values_emissions = np.random.uniform(-R + amplitude, R + amplitude)
+        data[positions] = values_emissions
+
+        return data, {"Позиция": positions, "Значения": data[positions]}

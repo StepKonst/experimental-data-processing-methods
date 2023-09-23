@@ -4,9 +4,24 @@ name = "Главная"
 icon = "🏠"
 
 [[pages]]
+name = "Случайные значение"
+icon = "🔀"
+is_section = true
+
+[[pages]]
 path = "app/pages/noise.py"
 name = "Шум"
 icon = "🎧"
+
+[[pages]]
+path = "app/pages/noise.py"
+name = "Шум"
+icon = "🎧"
+
+[[pages]]
+path = "app/pages/emission.py"
+name = "Выброс"
+icon = "☢️"
 
 [[pages]]
 name = "Тренды"
