@@ -39,8 +39,13 @@ N_value = st.slider(
 
 t, data = model.combined_trend(trend_type, a_value, b_value, N_value)
 
-st.subheader("Данные о тенденциях:")
-st.line_chart(data)
+if data is None:
+    st.error("Выберите тренды в боковом меню")
+else:
+    st.success(f"Выбранные тренды: {trend_type}")
 
-st.sidebar.subheader("Таблица данных тренда:")
-st.sidebar.dataframe(pd.DataFrame({"Время": t, "Data": data}), width=300)
+    st.subheader("Данные о тенденциях:")
+    st.line_chart(data)
+
+    st.sidebar.subheader("Таблица данных тренда:")
+    st.sidebar.dataframe(pd.DataFrame({"Время": t, "Data": data}), width=300)
