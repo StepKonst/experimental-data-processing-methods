@@ -39,7 +39,7 @@ class Model:
             )
             combined_trend_values[i] += trend_values
 
-        return time_values, np.concatenate(combined_trend_values, axis=0)
+        return time_values, np.concatenate(combined_trend_values)
 
     def noise(self, N: int, R: float) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
@@ -66,9 +66,13 @@ class Model:
     def spiles(self, N: int, M: int, R: float, Rs: float) -> Tuple[np.ndarray, dict]:
         data = np.zeros(N + 1)
         positions = random.sample(range(N), M)
-        sign = np.random.choice([-1, 1], M)
-        amplitude = Rs * sign
-        values_emissions = np.random.uniform(-R + amplitude, R + amplitude)
-        data[positions] = values_emissions
+        values_emissions_plus = np.random.uniform(R - Rs, R + Rs, size=M)
+        values_emissions_minus = np.random.uniform(-R - Rs, -R + Rs, size=M)
+        values_emissions = np.concatenate(
+            [values_emissions_plus, values_emissions_minus]
+        )
+        random.shuffle(values_emissions)
+        values = values_emissions[:M]
+        data[positions] = values
 
-        return data, {"Позиция": positions, "Значения": data[positions]}
+        return (data, {"Позиция": positions, "Значения": data[positions]})
