@@ -7,7 +7,7 @@ from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import model
+import model, analysis
 
 add_page_title()
 
@@ -17,6 +17,7 @@ show_pages_from_config()
 st.title("Визуализация данных трендов")
 
 model = model.Model()
+analysis = analysis.Analysis()
 
 trend_type = st.sidebar.selectbox(
     "Выберите тип тренда",
@@ -44,3 +45,35 @@ st.line_chart(data)
 
 st.sidebar.subheader("Таблица данных тренда:")
 st.sidebar.dataframe(pd.DataFrame({"Время": t, "Data": data}), width=300)
+
+statistical_characteristics = analysis.statistics(N_value, data)
+
+st.dataframe(
+    pd.DataFrame(
+        {
+            "Минимальное значение": statistical_characteristics.get(
+                "Минимальное значение"
+            ),
+            "Максимальное значение": statistical_characteristics.get(
+                "Максимальное значение"
+            ),
+            "Среднее значение": statistical_characteristics.get("Среднее значение"),
+            "Дисперсия": statistical_characteristics.get("Дисперсия"),
+            "Стандартное отклонение": statistical_characteristics.get(
+                "Стандартное отклонение"
+            ),
+            "Ассиметрия": statistical_characteristics.get("Ассиметрия"),
+            "Коэффициент ассиметрии": statistical_characteristics.get(
+                "Коэффициент ассиметрии"
+            ),
+            "Эксцесс": statistical_characteristics.get("Эксцесс"),
+            "Куртозис": statistical_characteristics.get("Куртозис"),
+            "Средний квадрат": statistical_characteristics.get("Средний квадрат"),
+            "Среднеквадратическая ошибка": statistical_characteristics.get(
+                "Среднеквадратическая ошибка"
+            ),
+        },
+        index=["Значения"],
+    ).T,
+    width=700,
+)
