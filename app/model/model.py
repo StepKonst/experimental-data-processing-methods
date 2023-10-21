@@ -1,5 +1,9 @@
+__all__ = ["Model"]
+
+import random
+from typing import List, Tuple
+
 import numpy as np
-from typing import Tuple, List
 
 
 class Model:
@@ -25,7 +29,7 @@ class Model:
         combined_trend_values = np.zeros(N)
 
         if len(types) == 0:
-            return np.array([0]), np.array([0])
+            return None, None
 
         combined_trend_values = np.array_split(combined_trend_values, len(types))
 
@@ -35,9 +39,9 @@ class Model:
             )
             combined_trend_values[i] += trend_values
 
-        return time_values, np.concatenate(combined_trend_values, axis=0)
+        return time_values, np.concatenate(combined_trend_values)
 
-    def noise(self, N: int, R: float):
+    def noise(self, N: int, R: float) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
         noise_values = np.random.uniform(-R, R, size=N)
 
@@ -48,10 +52,27 @@ class Model:
 
         return time_values, data
 
-    def my_noise(self, N: int, R: float):
+    def my_noise(self, N: int, R: float) -> Tuple[np.ndarray, np.ndarray]:
         time_values = np.arange(0, N)
-        noise_values = np.random.uniform(-R, R, size=N)
-        # Нужно исправить! Есть тренд!!!
-        data = [noise + time for noise, time in zip(noise_values, time_values)]
+        noise_values = np.array([random.random() * 2 - 1 for _ in range(N)]) * R
+        data = noise_values
 
         return time_values, data
+
+    def shift(self, inData: np.ndarray, C: float, N1: int, N2: int) -> np.ndarray:
+        inData[N1:N2] += C
+        return inData
+
+    def spiles(self, N: int, M: int, R: float, Rs: float) -> Tuple[np.ndarray, dict]:
+        data = np.zeros(N + 1)
+        positions = random.sample(range(N), M)
+        values_emissions_plus = np.random.uniform(R - Rs, R + Rs, size=M)
+        values_emissions_minus = np.random.uniform(-R - Rs, -R + Rs, size=M)
+        values_emissions = np.concatenate(
+            [values_emissions_plus, values_emissions_minus]
+        )
+        random.shuffle(values_emissions)
+        values = values_emissions[:M]
+        data[positions] = values
+
+        return (data, {"Позиция": positions, "Значения": data[positions]})
