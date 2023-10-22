@@ -22,29 +22,17 @@ class Analysis:
             "Среднеквадратическая ошибка": np.sqrt(np.mean(data**2)),
         }
 
-    def stationarity(self, data: np.ndarray, M: int) -> bool:
-        intervals = [
-            {
-                "Среднее значение": np.mean(segment),
-                "Стандартное отклонение": np.std(segment),
-            }
-            for segment in np.array_split(data, M)
-        ]
+    def stationarity(self, data: np.ndarray, M: int) -> str:
+        data = abs(data)
+        segments = np.array_split(data, M)
+        means = [np.mean(segment) for segment in segments]
+        stds = [np.std(segment) for segment in segments]
 
         for i in range(M - 1):
-            j = i + 1
-            abs_diff_mean = np.abs(
-                intervals[i]["Среднее значение"] - intervals[j]["Среднее значение"]
-            )
-            abs_diff_std = np.abs(
-                intervals[i]["Стандартное отклонение"]
-                - intervals[j]["Стандартное отклонение"]
-            )
+            abs_diff_mean = np.abs(means[i + 1] - means[i])
+            abs_diff_std = np.abs(stds[i + 1] - stds[i])
 
-            if (
-                abs_diff_mean / intervals[i]["Среднее значение"] * 100 >= 5
-                or abs_diff_std / intervals[i]["Стандартное отклонение"] * 100 >= 5
-            ):
-                return "Процесс не стационарный"
+            if abs_diff_mean / means[i] >= 0.05 or abs_diff_std / stds[i] >= 0.05:
+                return "Процесс нестационарный"
 
         return "Процесс стационарный"

@@ -14,11 +14,6 @@ name = "Шум"
 icon = "🎧"
 
 [[pages]]
-path = "app/pages/noise.py"
-name = "Шум"
-icon = "🎧"
-
-[[pages]]
 path = "app/pages/emission.py"
 name = "Выброс"
 icon = "☢️"
