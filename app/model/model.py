@@ -76,3 +76,24 @@ class Model:
         data[positions] = values
 
         return (data, {"Позиция": positions, "Значения": data[positions]})
+
+    def harm(self, N: int, A0: int, f0: int, delta_t: float) -> np.ndarray:
+        if delta_t > 1 / (2 * f0):
+            return None
+
+        k = np.arange(0, N)
+        harm_data = A0 * np.sin(2 * np.pi * f0 * k * delta_t)
+
+        return harm_data
+
+    def polyharm(self, N: int, a_f_data: list, delta_t: float) -> np.ndarray:
+        max_fi = max(params["f"] for params in a_f_data)
+        if delta_t > 1 / (2 * max_fi):
+            return None
+
+        k = np.arange(0, N)
+        values = np.zeros(N)
+        for params in a_f_data:
+            values += params["A"] * np.sin(2 * np.pi * params["f"] * k * delta_t)
+
+        return values

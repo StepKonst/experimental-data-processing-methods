@@ -19,6 +19,11 @@ name = "Выброс"
 icon = "☢️"
 
 [[pages]]
+path = "app/pages/harm_process.py"
+name = "Гармонический процесс"
+icon = "☯️"
+
+[[pages]]
 name = "Тренды"
 icon = "📈"
 is_section = true
