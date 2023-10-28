@@ -1,14 +1,13 @@
 import os
 import sys
 
-import pandas as pd
-from st_aggrid import AgGrid
 import streamlit as st
 from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 import analysis
+from analysis import utils
 import model
 
 model = model.Model()
@@ -86,5 +85,17 @@ if harm_data is None or polyharm_data is None:
 st.markdown("### Гармонический процесс")
 st.line_chart(harm_data)
 
+m_value = st.sidebar.slider(
+    "Выберите значение M для процессов",
+    min_value=1,
+    max_value=200,
+    step=1,
+    value=100,
+)
+
+utils.distribution_density(harm_data, m_value)
+
 st.markdown("### Полигармонический процесс")
 st.line_chart(polyharm_data)
+
+utils.distribution_density(polyharm_data, m_value)

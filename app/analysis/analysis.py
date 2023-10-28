@@ -1,6 +1,7 @@
 __all__ = ["Analysis"]
 
 import numpy as np
+import pandas as pd
 from scipy.stats import kurtosis, skew
 
 
@@ -36,3 +37,9 @@ class Analysis:
                 return "Процесс нестационарный"
 
         return "Процесс стационарный"
+
+    def hist(self, data: np.ndarray, M: int) -> np.ndarray:
+        hist, bins = np.histogram(data, M, density=True)
+        bin_center = (bins[:-1] + bins[1:]) / 2
+
+        return pd.DataFrame({"x": bin_center, "y": hist})

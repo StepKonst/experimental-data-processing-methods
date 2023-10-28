@@ -8,6 +8,7 @@ from st_pages import add_page_title, show_pages_from_config
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 import analysis
+from analysis import utils
 import model
 
 model = model.Model()
@@ -96,6 +97,16 @@ m_value = st.number_input(
 )
 st.success(analysis.stationarity(data, m_value))
 
+m_value_density = st.sidebar.slider(
+    "Выберите количество интервалов гистограммы процессов",
+    min_value=1,
+    max_value=200,
+    step=1,
+    value=100,
+)
+
+utils.distribution_density(data, m_value_density)
+
 st.markdown(
     "### Данные для случайного шума с использованием несложного генератора случайных чисел:"
 )
@@ -109,3 +120,5 @@ m = st.number_input(
     max_value=50,
 )
 st.success(analysis.stationarity(data_me, m))
+
+utils.distribution_density(data_me, m_value_density)

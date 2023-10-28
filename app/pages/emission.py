@@ -8,6 +8,7 @@ from st_pages import add_page_title, show_pages_from_config
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 import model
+from analysis import utils
 
 model = model.Model()
 
@@ -51,3 +52,13 @@ st.sidebar.dataframe(
     ),
     width=300,
 )
+
+m_value = st.sidebar.slider(
+    "Выберите значение M для процессов",
+    min_value=1,
+    max_value=200,
+    step=1,
+    value=100,
+)
+
+utils.distribution_density(emission_data, m_value)
