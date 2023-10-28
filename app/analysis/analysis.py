@@ -43,3 +43,24 @@ class Analysis:
         bin_center = (bins[:-1] + bins[1:]) / 2
 
         return pd.DataFrame({"x": bin_center, "y": hist})
+
+    def acf(self, data: np.ndarray, function_type: str) -> list:
+        data_mean = np.mean(data)
+        n = len(data)
+        l_values = np.arange(0, n)
+        ac_values = []
+
+        for L in l_values:
+            numerator = np.sum(
+                (data[: n - L - 1] - data_mean) * (data[L : n - 1] - data_mean)
+            )
+            denominator = np.sum((data - data_mean) ** 2)
+
+            if function_type == "Автокорреляционная функция":
+                ac = numerator / denominator
+            elif function_type == "Ковариационная функция":
+                ac = numerator / n
+
+            ac_values.append(ac)
+
+        return pd.DataFrame({"L": l_values, "AC": ac_values})

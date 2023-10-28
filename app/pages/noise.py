@@ -105,7 +105,22 @@ m_value_density = st.sidebar.slider(
     value=100,
 )
 
+func_type = st.sidebar.selectbox(
+    "Выберите тип функции",
+    [
+        "Автокорреляционная функция",
+        "Ковариационная функция",
+    ],
+)
+
 utils.distribution_density(data, m_value_density)
+
+
+st.markdown("### Графики Ковариационной и Автокорреляционной функций")
+
+acf = analysis.acf(data, func_type)
+st.line_chart(acf.set_index("L"))
+
 
 st.markdown(
     "### Данные для случайного шума с использованием несложного генератора случайных чисел:"
@@ -122,3 +137,8 @@ m = st.number_input(
 st.success(analysis.stationarity(data_me, m))
 
 utils.distribution_density(data_me, m_value_density)
+
+st.markdown("### Графики Ковариационной и Автокорреляционной функций")
+
+acf = analysis.acf(data_me, func_type)
+st.line_chart(acf.set_index("L"))

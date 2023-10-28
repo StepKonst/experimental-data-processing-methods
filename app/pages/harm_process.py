@@ -86,14 +86,27 @@ st.markdown("### Гармонический процесс")
 st.line_chart(harm_data)
 
 m_value = st.sidebar.slider(
-    "Выберите значение M для процессов",
+    "Выберите количество интервалов гистограммы процессов",
     min_value=1,
     max_value=200,
     step=1,
     value=100,
 )
 
+func_type = st.sidebar.selectbox(
+    "Выберите тип функции",
+    [
+        "Автокорреляционная функция",
+        "Ковариационная функция",
+    ],
+)
+
 utils.distribution_density(harm_data, m_value)
+
+st.markdown("### Графики Ковариационной и Автокорреляционной функций")
+
+acf = analysis.acf(harm_data, func_type)
+st.line_chart(acf.set_index("L"))
 
 st.markdown("### Полигармонический процесс")
 st.line_chart(polyharm_data)
