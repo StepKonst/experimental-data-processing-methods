@@ -82,6 +82,12 @@ st.sidebar.success(f"Выбранный отрезок: [{segment[0]}, {segment[
 data = model.shift(default_data, c_value, segment[0], segment[1])
 data_me = model.shift(default_data_me, c_value, segment[0], segment[1])
 
+# Для процесса взаимокорреляции
+datax = model.shift(default_data, c_value, segment[0], segment[1])
+datay = model.shift(default_data, c_value, segment[0], segment[1])
+data_mex = model.shift(default_data_me, c_value, segment[0], segment[1])
+data_mey = model.shift(default_data_me, c_value, segment[0], segment[1])
+
 statistical_characteristics = analysis.statistics(n_value, data)
 statistical_characteristics_me = analysis.statistics(n_value, data_me)
 
@@ -121,6 +127,11 @@ st.markdown("### Графики Ковариационной и Автокор
 acf = analysis.acf(data, func_type)
 st.line_chart(acf.set_index("L"))
 
+st.markdown("### График взаимокорреляции")
+
+most_very_good = analysis.ccf(datax, datay)
+st.line_chart(most_very_good.set_index("L"))
+
 
 st.markdown(
     "### Данные для случайного шума с использованием несложного генератора случайных чисел:"
@@ -142,3 +153,8 @@ st.markdown("### Графики Ковариационной и Автокор
 
 acf = analysis.acf(data_me, func_type)
 st.line_chart(acf.set_index("L"))
+
+st.markdown("### График взаимокорреляции")
+
+most_very_good = analysis.ccf(data_mex, data_mey)
+st.line_chart(most_very_good.set_index("L"))

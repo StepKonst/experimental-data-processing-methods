@@ -64,3 +64,15 @@ class Analysis:
             ac_values.append(ac)
 
         return pd.DataFrame({"L": l_values, "AC": ac_values})
+
+    def ccf(self, datax: np.ndarray, datay: np.ndarray):
+        if len(datax) != len(datay):
+            raise ValueError("Длины входных данных не совпадают")
+
+        n = len(datax)
+        l_values = np.arange(0, n)
+        x_mean = np.mean(datax)
+        y_mean = np.mean(datay)
+        ccf_values = np.correlate(datax - x_mean, datay - y_mean, mode="full") / n
+
+        return pd.DataFrame({"L": l_values, "CCF": ccf_values[:n]})

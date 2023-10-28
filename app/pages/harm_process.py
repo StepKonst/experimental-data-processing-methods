@@ -76,6 +76,11 @@ polyharm_data = model.polyharm(
     delta_t=polyharm_delta_t,
 )
 
+# Для процесса взаимокорреляции
+
+harm_data_x = model.harm(N=n_value, A0=a_value, f0=f_value, delta_t=delta_t)
+harm_data_y = model.harm(N=n_value, A0=a_value, f0=f_value, delta_t=delta_t)
+
 if harm_data is None or polyharm_data is None:
     st.error(
         "Некоректное значение временного интервала для гармонического или полигармонического процесса"
@@ -107,6 +112,11 @@ st.markdown("### Графики Ковариационной и Автокор
 
 acf = analysis.acf(harm_data, func_type)
 st.line_chart(acf.set_index("L"))
+
+st.markdown("### График взаимокорреляции")
+
+most_very_good = analysis.ccf(harm_data_x, harm_data_y)
+st.line_chart(most_very_good.set_index("L"))
 
 st.markdown("### Полигармонический процесс")
 st.line_chart(polyharm_data)
