@@ -74,3 +74,42 @@ class Analysis:
         ccf_values = np.correlate(datax - x_mean, datay - y_mean, mode="full") / n
 
         return pd.DataFrame({"L": l_values, "CCF": ccf_values[:n]})
+
+    def fourier(self, data: np.ndarray) -> pd.DataFrame:
+        # Выполнение прямого преобразования Фурье
+        fourier_transform = np.fft.fft(data)
+
+        # Вычисление амплитудного спектра
+        amplitude_spectrum = np.abs(fourier_transform)
+
+        return pd.DataFrame(
+            {
+                "Re[Xn]": fourier_transform.real,
+                "Im[Xn]": fourier_transform.imag,
+                "|Xn|": amplitude_spectrum,
+            }
+        )
+
+    def spectr_fourier(self, data: np.ndarray, dt: float) -> pd.DataFrame:
+        n = len(data) // 2
+        fourier_data = self.fourier(data)
+        xn_values = fourier_data["|Xn|"].values
+        f_border = 1 / (2 * dt)
+        delta_f = f_border / n
+        frequencies = np.arange(n) * delta_f
+
+        return pd.DataFrame({"f": frequencies, "|Xn|": xn_values[:n]})
+
+    def spectr_fourier_window(
+        self, data: np.ndarray, dt: float, L: int
+    ) -> pd.DataFrame:
+        n = len(data)
+        window = np.concatenate([np.ones(n - L), np.zeros(L)])
+        data_windowed = data * window
+        fourier_data = self.fourier(data_windowed)
+        xn_values = fourier_data["|Xn|"].values
+        f_border = 1 / (2 * dt)
+        delta_f = f_border / n
+        frequencies = np.arange(n) * delta_f
+
+        return pd.DataFrame({"f": frequencies, "|Xn|": xn_values})
