@@ -24,6 +24,11 @@ name = "Гармонический процесс"
 icon = "☯️"
 
 [[pages]]
+path = "app/pages/volume.py"
+name = "Чтение файла"
+icon = "🗄️"
+
+[[pages]]
 name = "Тренды"
 icon = "📈"
 is_section = true

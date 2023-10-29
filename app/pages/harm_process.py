@@ -6,9 +6,8 @@ from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import analysis
+import analysis, model
 from analysis import utils
-import model
 
 model = model.Model()
 analysis = analysis.Analysis()
@@ -97,17 +96,17 @@ m_value = st.sidebar.slider(
     value=100,
 )
 
-func_type = st.sidebar.selectbox(
+utils.distribution_density(harm_data, m_value)
+
+st.markdown("#### Графики Ковариационной и Автокорреляционной функций")
+
+func_type = st.selectbox(
     "Выберите тип функции",
     [
         "Автокорреляционная функция",
         "Ковариационная функция",
     ],
 )
-
-utils.distribution_density(harm_data, m_value)
-
-st.markdown("#### Графики Ковариационной и Автокорреляционной функций")
 
 acf = analysis.acf(harm_data, func_type)
 st.line_chart(acf.set_index("L"))
@@ -117,9 +116,37 @@ st.markdown("#### График кроскорреляции")
 cross_correlation = analysis.ccf(harm_data, harm_data_y)
 st.line_chart(cross_correlation.set_index("L"))
 
+
+st.markdown("#### График амплитудного спектра Фурье")
+harm_spectr = analysis.spectr_fourier(harm_data, delta_t)
+st.line_chart(harm_spectr.set_index("f"))
+
+l_values = [24, 124, 224]
+harm_but = st.button("График амплитудного спектра Фурье гармонического процесса")
+if harm_but:
+    for L in l_values:
+        st.markdown(f"#### График амплитудного спектра Фурье с окном L={L}")
+        harm_spectr = analysis.spectr_fourier_window(harm_data, dt=delta_t, L=L)
+        st.line_chart(harm_spectr.set_index("f"))
+
 st.divider()
 
 st.markdown("## Полигармонический процесс")
 st.line_chart(polyharm_data)
 
 utils.distribution_density(polyharm_data, m_value)
+
+st.markdown("#### График амплитудного спектра Фурье")
+polyharm_spectr = analysis.spectr_fourier(polyharm_data, polyharm_delta_t)
+st.line_chart(polyharm_spectr.set_index("f"))
+
+polyharm_but = st.button(
+    "График амплитудного спектра Фурье полигармонического процесса"
+)
+if polyharm_but:
+    for L in l_values:
+        st.markdown(f"#### График амплитудного спектра Фурье с окном L={L}")
+        polyharm_spectr = analysis.spectr_fourier_window(
+            polyharm_data, dt=polyharm_delta_t, L=L
+        )
+        st.line_chart(polyharm_spectr.set_index("f"))
