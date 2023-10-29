@@ -1,61 +1,20 @@
 import os
 import sys
 
-import pandas as pd
 import streamlit as st
 from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import analysis
+import analysis, model
 from analysis import utils
-import model
+from model import utils as model_utils
 
 model = model.Model()
 analysis = analysis.Analysis()
 
 add_page_title()
 show_pages_from_config()
-
-
-@st.cache_data
-def get_data(n_value: int, r_value: float):
-    _, noise = model.noise(n_value, r_value)
-    _, my_noise = model.my_noise(n_value, r_value)
-    return noise, my_noise
-
-
-def get_dataframe(statistical_characteristics: dict):
-    return st.dataframe(
-        pd.DataFrame(
-            {
-                "Минимальное значение": statistical_characteristics.get(
-                    "Минимальное значение"
-                ),
-                "Максимальное значение": statistical_characteristics.get(
-                    "Максимальное значение"
-                ),
-                "Среднее значение": statistical_characteristics.get("Среднее значение"),
-                "Дисперсия": statistical_characteristics.get("Дисперсия"),
-                "Стандартное отклонение": statistical_characteristics.get(
-                    "Стандартное отклонение"
-                ),
-                "Ассиметрия": statistical_characteristics.get("Ассиметрия"),
-                "Коэффициент ассиметрии": statistical_characteristics.get(
-                    "Коэффициент ассиметрии"
-                ),
-                "Эксцесс": statistical_characteristics.get("Эксцесс"),
-                "Куртозис": statistical_characteristics.get("Куртозис"),
-                "Средний квадрат": statistical_characteristics.get("Средний квадрат"),
-                "Среднеквадратическая ошибка": statistical_characteristics.get(
-                    "Среднеквадратическая ошибка"
-                ),
-            },
-            index=["Значения"],
-        ).T,
-        width=700,
-        height=420,
-    )
 
 
 n_value = st.sidebar.number_input(
@@ -75,25 +34,30 @@ segment = st.sidebar.slider(
     value=(10, 1000),
 )
 
-default_data, default_data_me = get_data(n_value, r_value)
+# Генерация шумов
+default_data, default_data_me = model_utils.get_data(n_value, r_value)
+
+# Шум для кросскорреляции
+_, default_data_y = model.noise(n_value, r_value)
+_, default_data_me_y = model.my_noise(n_value, r_value)
 
 st.sidebar.success(f"Выбранный отрезок: [{segment[0]}, {segment[1]}]")
 
+# Смещение для шумов
 data = model.shift(default_data, c_value, segment[0], segment[1])
 data_me = model.shift(default_data_me, c_value, segment[0], segment[1])
 
-# Для процесса взаимокорреляции
-datax = model.shift(default_data, c_value, segment[0], segment[1])
-datay = model.shift(default_data, c_value, segment[0], segment[1])
-data_mex = model.shift(default_data_me, c_value, segment[0], segment[1])
-data_mey = model.shift(default_data_me, c_value, segment[0], segment[1])
+# Смещение для шумов кросскорреляции
+data_y = model.shift(default_data_y, c_value, segment[0], segment[1])
+data_me_y = model.shift(default_data_me_y, c_value, segment[0], segment[1])
 
-statistical_characteristics = analysis.statistics(n_value, data)
-statistical_characteristics_me = analysis.statistics(n_value, data_me)
+# Статистические характеристики
+statistical_characteristics = analysis.statistics(data)
+statistical_characteristics_me = analysis.statistics(data_me)
 
-st.markdown("### Данные для случайного шума:")
+st.markdown("## Данные для случайного шума:")
 st.line_chart(data)
-get_dataframe(statistical_characteristics)
+model_utils.get_dataframe(statistical_characteristics)
 
 m_value = st.number_input(
     "Выберите количество сегментов для случайного шума:",
@@ -122,23 +86,23 @@ func_type = st.sidebar.selectbox(
 utils.distribution_density(data, m_value_density)
 
 
-st.markdown("### Графики Ковариационной и Автокорреляционной функций")
+st.markdown("#### Графики Автокорреляционной или Ковариационной функций")
 
 acf = analysis.acf(data, func_type)
 st.line_chart(acf.set_index("L"))
 
-st.markdown("### График взаимокорреляции")
+st.markdown("#### График кроскорреляции")
+cross_correlation = analysis.ccf(data, data_y)
+st.line_chart(cross_correlation.set_index("L"))
 
-most_very_good = analysis.ccf(datax, datay)
-st.line_chart(most_very_good.set_index("L"))
-
+st.divider()
 
 st.markdown(
-    "### Данные для случайного шума с использованием несложного генератора случайных чисел:"
+    "## Данные для случайного шума с использованием несложного генератора случайных чисел:"
 )
 st.line_chart(data_me)
 
-get_dataframe(statistical_characteristics_me)
+model_utils.get_dataframe(statistical_characteristics_me)
 m = st.number_input(
     "Выберите количество сегментов для шума с использованием несложного генератора случайных чисел:",
     step=1,
@@ -149,12 +113,12 @@ st.success(analysis.stationarity(data_me, m))
 
 utils.distribution_density(data_me, m_value_density)
 
-st.markdown("### Графики Ковариационной и Автокорреляционной функций")
+st.markdown("#### Графики Автокорреляционной или Ковариационной функций")
 
 acf = analysis.acf(data_me, func_type)
 st.line_chart(acf.set_index("L"))
 
-st.markdown("### График взаимокорреляции")
+st.markdown("#### График кроскорреляции")
 
-most_very_good = analysis.ccf(data_mex, data_mey)
-st.line_chart(most_very_good.set_index("L"))
+cross_correlation = analysis.ccf(data_me, data_me_y)
+st.line_chart(cross_correlation.set_index("L"))

@@ -47,7 +47,7 @@ st.line_chart(data)
 st.sidebar.subheader("Таблица данных тренда:")
 st.sidebar.dataframe(pd.DataFrame({"Время": t, "Data": data}), width=300)
 
-statistical_characteristics = analysis.statistics(N_value, data)
+statistical_characteristics = analysis.statistics(data)
 
 st.dataframe(
     pd.DataFrame(

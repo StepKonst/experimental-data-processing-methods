@@ -6,7 +6,7 @@ from scipy.stats import kurtosis, skew
 
 
 class Analysis:
-    def statistics(self, N: int, data: np.ndarray) -> dict:
+    def statistics(self, data: np.ndarray) -> dict:
         return {
             "Минимальное значение": np.min(data),
             "Максимальное значение": np.max(data),
@@ -15,9 +15,7 @@ class Analysis:
             "Стандартное отклонение": np.std(data),
             "Ассиметрия": skew(data),
             "Коэффициент ассиметрии": skew(data) / np.std(data),
-            "Эксцесс": kurtosis(
-                data, fisher=False
-            ),  # Эксцесс sum((x - mean_value) ** 4 for x in data)
+            "Эксцесс": kurtosis(data, fisher=False),
             "Куртозис": kurtosis(data, fisher=True),
             "Средний квадрат": np.mean(data**2),
             "Среднеквадратическая ошибка": np.sqrt(np.mean(data**2)),
@@ -38,13 +36,13 @@ class Analysis:
 
         return "Процесс стационарный"
 
-    def hist(self, data: np.ndarray, M: int) -> np.ndarray:
+    def hist(self, data: np.ndarray, M: int) -> pd.DataFrame:
         hist, bins = np.histogram(data, M, density=True)
         bin_center = (bins[:-1] + bins[1:]) / 2
 
         return pd.DataFrame({"x": bin_center, "y": hist})
 
-    def acf(self, data: np.ndarray, function_type: str) -> list:
+    def acf(self, data: np.ndarray, function_type: str) -> pd.DataFrame:
         data_mean = np.mean(data)
         n = len(data)
         l_values = np.arange(0, n)
@@ -65,7 +63,7 @@ class Analysis:
 
         return pd.DataFrame({"L": l_values, "AC": ac_values})
 
-    def ccf(self, datax: np.ndarray, datay: np.ndarray):
+    def ccf(self, datax: np.ndarray, datay: np.ndarray) -> pd.DataFrame:
         if len(datax) != len(datay):
             raise ValueError("Длины входных данных не совпадают")
 

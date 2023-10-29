@@ -59,6 +59,7 @@ polyharm_n_value = st.sidebar.number_input(
     value=1000,
 )
 
+# Значения амплитуды и частоты для полигармонического процесса
 a_f_values = [{"A": 100, "f": 33}, {"A": 15, "f": 5}, {"A": 20, "f": 170}]
 
 polyharm_delta_t = st.sidebar.number_input(
@@ -76,9 +77,7 @@ polyharm_data = model.polyharm(
     delta_t=polyharm_delta_t,
 )
 
-# Для процесса взаимокорреляции
-
-harm_data_x = model.harm(N=n_value, A0=a_value, f0=f_value, delta_t=delta_t)
+# Для процесса кроскорреляции
 harm_data_y = model.harm(N=n_value, A0=a_value, f0=f_value, delta_t=delta_t)
 
 if harm_data is None or polyharm_data is None:
@@ -87,7 +86,7 @@ if harm_data is None or polyharm_data is None:
     )
     sys.exit()
 
-st.markdown("### Гармонический процесс")
+st.markdown("## Гармонический процесс")
 st.line_chart(harm_data)
 
 m_value = st.sidebar.slider(
@@ -108,17 +107,19 @@ func_type = st.sidebar.selectbox(
 
 utils.distribution_density(harm_data, m_value)
 
-st.markdown("### Графики Ковариационной и Автокорреляционной функций")
+st.markdown("#### Графики Ковариационной и Автокорреляционной функций")
 
 acf = analysis.acf(harm_data, func_type)
 st.line_chart(acf.set_index("L"))
 
-st.markdown("### График взаимокорреляции")
+st.markdown("#### График кроскорреляции")
 
-most_very_good = analysis.ccf(harm_data_x, harm_data_y)
-st.line_chart(most_very_good.set_index("L"))
+cross_correlation = analysis.ccf(harm_data, harm_data_y)
+st.line_chart(cross_correlation.set_index("L"))
 
-st.markdown("### Полигармонический процесс")
+st.divider()
+
+st.markdown("## Полигармонический процесс")
 st.line_chart(polyharm_data)
 
 utils.distribution_density(polyharm_data, m_value)
