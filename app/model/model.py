@@ -97,3 +97,15 @@ class Model:
             values += params["A"] * np.sin(2 * np.pi * params["f"] * k * delta_t)
 
         return values
+
+    def add_model(self, data1: np.ndarray, data2: np.ndarray) -> np.ndarray:
+        min_len = min(len(data1), len(data2))
+        values1 = data1[:min_len]
+        values2 = data2[:min_len]
+        return values1 + values2
+
+    def multi_model(self, data1: np.ndarray, data2: np.ndarray) -> np.ndarray:
+        min_len = min(len(data1), len(data2))
+        values1 = data1[:min_len]
+        values2 = data2[:min_len]
+        return values1 * values2

@@ -108,8 +108,9 @@ class Analysis:
         data_windowed = data * window
         fourier_data = self.fourier(data_windowed)
         xn_values = fourier_data["|Xn|"].values
+        n = len(data) // 2
         f_border = 1 / (2 * dt)
         delta_f = f_border / n
         frequencies = np.arange(n) * delta_f
 
-        return pd.DataFrame({"f": frequencies, "|Xn|": xn_values})
+        return pd.DataFrame({"f": frequencies, "|Xn|": xn_values[:n]})

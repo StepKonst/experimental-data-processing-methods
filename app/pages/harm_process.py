@@ -77,7 +77,8 @@ polyharm_data = model.polyharm(
 )
 
 # Для процесса кроскорреляции
-harm_data_y = model.harm(N=n_value, A0=a_value, f0=f_value, delta_t=delta_t)
+harm_data_z = model.harm(N=n_value, A0=a_value, f0=f_value, delta_t=delta_t)
+harm_data_y = model.harm(N=n_value, A0=22, f0=33, delta_t=delta_t)
 
 if harm_data is None or polyharm_data is None:
     st.error(
@@ -111,22 +112,24 @@ func_type = st.selectbox(
 acf = analysis.acf(harm_data, func_type)
 st.line_chart(acf.set_index("L"))
 
+# Кросскорреляция
 st.markdown("#### График кроскорреляции")
 
-cross_correlation = analysis.ccf(harm_data, harm_data_y)
+cross_correlation = analysis.ccf(harm_data, harm_data_z)
 st.line_chart(cross_correlation.set_index("L"))
 
 
-st.markdown("#### График амплитудного спектра Фурье")
-harm_spectr = analysis.spectr_fourier(harm_data, delta_t)
+st.markdown("#### График амплитудного спектра Фурье гармонического процесса")
+harm_spectr = analysis.spectr_fourier(harm_data, dt=delta_t)
 st.line_chart(harm_spectr.set_index("f"))
 
 l_values = [24, 124, 224]
+harm_data_n = model.harm(N=1024, A0=100, f0=15.0, delta_t=0.001)
 harm_but = st.button("График амплитудного спектра Фурье гармонического процесса")
 if harm_but:
     for L in l_values:
         st.markdown(f"#### График амплитудного спектра Фурье с окном L={L}")
-        harm_spectr = analysis.spectr_fourier_window(harm_data, dt=delta_t, L=L)
+        harm_spectr = analysis.spectr_fourier_window(harm_data_n, dt=delta_t, L=L)
         st.line_chart(harm_spectr.set_index("f"))
 
 st.divider()

@@ -29,6 +29,11 @@ name = "Чтение файла"
 icon = "🗄️"
 
 [[pages]]
+path = "app/pages/additive_model.py"
+name = "Аддитивная модель"
+icon = "🤌"
+
+[[pages]]
 name = "Тренды"
 icon = "📈"
 is_section = true
