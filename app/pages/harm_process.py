@@ -113,7 +113,7 @@ acf = analysis.acf(harm_data, func_type)
 st.line_chart(acf.set_index("L"))
 
 # Кросскорреляция
-st.markdown("#### График кроскорреляции")
+st.markdown("#### График кросскорреляции")
 
 cross_correlation = analysis.ccf(harm_data, harm_data_z)
 st.line_chart(cross_correlation.set_index("L"))
