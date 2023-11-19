@@ -71,9 +71,11 @@ class Analysis:
         l_values = np.arange(0, n)
         x_mean = np.mean(datax)
         y_mean = np.mean(datay)
-        ccf_values = np.correlate(datax - x_mean, datay - y_mean, mode="full") / n
+        ccf_values = (
+            np.correlate(datax - x_mean, datay - y_mean, mode="full")[:n][::-1] / n
+        )
 
-        return pd.DataFrame({"L": l_values, "CCF": ccf_values[:n]})
+        return pd.DataFrame({"L": l_values, "CCF": ccf_values})
 
     def fourier(self, data: np.ndarray) -> pd.DataFrame:
         # Выполнение прямого преобразования Фурье

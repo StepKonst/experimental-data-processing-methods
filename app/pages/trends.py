@@ -79,12 +79,4 @@ st.dataframe(
     width=700,
 )
 
-m_value = st.sidebar.slider(
-    "Выберите значение M для процессов",
-    min_value=1,
-    max_value=200,
-    step=1,
-    value=100,
-)
-
-utils.distribution_density(data, m_value)
+utils.distribution_density(data)

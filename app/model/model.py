@@ -63,7 +63,7 @@ class Model:
         inData[N1:N2] += C
         return inData
 
-    def spiles(self, N: int, M: int, R: float, Rs: float) -> Tuple[np.ndarray, dict]:
+    def spikes(self, N: int, M: int, R: float, Rs: float) -> Tuple[np.ndarray, dict]:
         data = np.zeros(N + 1)
         positions = random.sample(range(N), M)
         values_emissions_plus = np.random.uniform(R - Rs, R + Rs, size=M)

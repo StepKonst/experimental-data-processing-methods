@@ -14,7 +14,7 @@ analysis = analysis.Analysis()
 add_page_title()
 show_pages_from_config()
 
-file_path = "pgp_dt0005.dat"
+file_path = "files/pgp_dt0005.dat"
 
 with open(file_path, "rb") as file:
     binary_data = file.read()

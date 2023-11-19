@@ -8,10 +8,15 @@ model = model.Model()
 
 
 @st.cache_data
-def get_data(n_value: int, r_value: float):
+def get_noise(n_value: int, r_value: float):
     _, noise = model.noise(n_value, r_value)
+    return noise
+
+
+@st.cache_data
+def get_my_noise(n_value: int, r_value: float):
     _, my_noise = model.my_noise(n_value, r_value)
-    return noise, my_noise
+    return my_noise
 
 
 def get_dataframe(statistical_characteristics: dict):

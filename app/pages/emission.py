@@ -8,7 +8,6 @@ from st_pages import add_page_title, show_pages_from_config
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 import model
-from analysis import utils
 
 model = model.Model()
 
@@ -39,7 +38,7 @@ rs_value = st.slider(
     value=m_value / 100 * 10,
 )
 
-emission_data, data_positions = model.spiles(n_value, m_value, r_value, rs_value)
+emission_data, data_positions = model.spikes(n_value, m_value, r_value, rs_value)
 
 st.line_chart(emission_data)
 
@@ -52,13 +51,3 @@ st.sidebar.dataframe(
     ),
     width=300,
 )
-
-m_value = st.sidebar.slider(
-    "Выберите значение M для процессов",
-    min_value=1,
-    max_value=200,
-    step=1,
-    value=100,
-)
-
-utils.distribution_density(emission_data, m_value)
