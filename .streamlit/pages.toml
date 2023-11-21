@@ -72,3 +72,13 @@ is_section = true
 path = "app/pages/additive_model.py"
 name = "Аддитивная модель трендов с другими процессами"
 icon = "🟣"
+
+[[pages]]
+path = "app/pages/anti_spike.py"
+name = "Подавление выбросов"
+icon = "🟣"
+
+[[pages]]
+path = "app/pages/linear_additive_model.py"
+name = "Удаление трендов"
+icon = "🟣"

@@ -7,11 +7,11 @@ from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import model, analysis
+import model, analysis, processing
 from analysis import utils
+from model import utils as model_utils
 
 add_page_title()
-
 show_pages_from_config()
 
 
@@ -19,6 +19,7 @@ st.title("Визуализация данных трендов")
 
 model = model.Model()
 analysis = analysis.Analysis()
+processing = processing.Processing()
 
 trend_type = st.sidebar.selectbox(
     "Выберите тип тренда",
@@ -49,34 +50,12 @@ st.sidebar.dataframe(pd.DataFrame({"Время": t, "Data": data}), width=300)
 
 statistical_characteristics = analysis.statistics(data)
 
-st.dataframe(
-    pd.DataFrame(
-        {
-            "Минимальное значение": statistical_characteristics.get(
-                "Минимальное значение"
-            ),
-            "Максимальное значение": statistical_characteristics.get(
-                "Максимальное значение"
-            ),
-            "Среднее значение": statistical_characteristics.get("Среднее значение"),
-            "Дисперсия": statistical_characteristics.get("Дисперсия"),
-            "Стандартное отклонение": statistical_characteristics.get(
-                "Стандартное отклонение"
-            ),
-            "Ассиметрия": statistical_characteristics.get("Ассиметрия"),
-            "Коэффициент ассиметрии": statistical_characteristics.get(
-                "Коэффициент ассиметрии"
-            ),
-            "Эксцесс": statistical_characteristics.get("Эксцесс"),
-            "Куртозис": statistical_characteristics.get("Куртозис"),
-            "Средний квадрат": statistical_characteristics.get("Средний квадрат"),
-            "Среднеквадратическая ошибка": statistical_characteristics.get(
-                "Среднеквадратическая ошибка"
-            ),
-        },
-        index=["Значения"],
-    ).T,
-    width=700,
-)
+model_utils.get_dataframe(statistical_characteristics=statistical_characteristics)
 
+st.divider()
+st.markdown("#### Данные после удаления в них смещения")
+anti_shift_data = processing.antishift(data=data)
+st.line_chart(anti_shift_data)
+
+st.divider()
 utils.distribution_density(data)

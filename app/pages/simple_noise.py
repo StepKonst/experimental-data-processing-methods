@@ -6,12 +6,13 @@ from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import analysis, model
+import analysis, model, processing
 from analysis import utils
 from model import utils as model_utils
 
 model = model.Model()
 analysis = analysis.Analysis()
+processing = processing.Processing()
 
 add_page_title()
 show_pages_from_config()
@@ -52,7 +53,6 @@ st.markdown(
 )
 st.line_chart(data)
 model_utils.get_dataframe(statistical_characteristics)
-
 m = st.number_input(
     "Выберите количество сегментов для шума с использованием несложного генератора случайных чисел:",
     step=1,
@@ -62,11 +62,14 @@ m = st.number_input(
 st.success(analysis.stationarity(data, m))
 
 st.divider()
+st.markdown("#### Данные после удаления в них смещения")
+anti_shift_data = processing.antishift(data=data)
+st.line_chart(anti_shift_data)
 
+st.divider()
 utils.distribution_density(data)
 
 st.divider()
-
 st.markdown("#### Графики Автокорреляционной или Ковариационной функций")
 
 func_type = st.selectbox(
@@ -81,8 +84,6 @@ acf = analysis.acf(data, func_type)
 st.line_chart(acf.set_index("L"))
 
 st.divider()
-
 st.markdown("#### График кроскорреляции")
-
 cross_correlation = analysis.ccf(data, data_cross)
 st.line_chart(cross_correlation.set_index("L"))

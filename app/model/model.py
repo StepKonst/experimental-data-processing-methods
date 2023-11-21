@@ -13,13 +13,15 @@ class Model:
         time_values = np.arange(0, N)
 
         trend_dict = {
-            "Линейно восходящий тренд": a * time_values + b,
-            "Линейно нисходящий тренд": -a * time_values + b,
-            "Нелинейно восходящий тренд": b * np.exp(a * time_values),
-            "Нелинейно нисходящий тренд": b * np.exp(-a * time_values),
+            "Линейно восходящий тренд": lambda a, time_values, b: a * time_values + b,
+            "Линейно нисходящий тренд": lambda a, time_values, b: -a * time_values + b,
+            "Нелинейно восходящий тренд": lambda a, time_values, b: b
+            * np.exp(a * time_values),
+            "Нелинейно нисходящий тренд": lambda a, time_values, b: b
+            * np.exp(-a * time_values),
         }
 
-        trend_values = trend_dict.get(type)
+        trend_values = trend_dict.get(type)(a, time_values, b)
         return time_values, trend_values
 
     def combined_trend(

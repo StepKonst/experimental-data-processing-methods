@@ -1,19 +1,18 @@
 import os
 import sys
 
-import pandas as pd
 import streamlit as st
 from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-import model
+import model, processing
 
 add_page_title()
-
 show_pages_from_config()
 
 model = model.Model()
+processing = processing.Processing()
 
 st.markdown("#### Графики аддитивных моделей")
 
