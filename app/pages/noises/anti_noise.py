@@ -1,14 +1,16 @@
 import os
 import sys
+
 import numpy as np
 import pandas as pd
-import streamlit as st
 import plotly.express as px
+import streamlit as st
 from st_pages import add_page_title, show_pages_from_config
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../.."))
 
-from model import Model, utils as model_utils
+from model import Model
+from model import utils as model_utils
 from processing import Processing
 
 model = Model()
