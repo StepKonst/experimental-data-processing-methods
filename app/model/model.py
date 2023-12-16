@@ -10,6 +10,24 @@ class Model:
     def trend(
         self, type: str, a: float, b: float, N: int
     ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Calculate the trend values based on the type of trend, coefficients, and number of data points.
+
+        Parameters:
+            type (str): The type of trend. Available options are:
+                - "Линейно восходящий тренд"
+                - "Линейно нисходящий тренд"
+                - "Нелинейно восходящий тренд"
+                - "Нелинейно нисходящий тренд"
+            a (float): The coefficient 'a' used in the trend calculation.
+            b (float): The coefficient 'b' used in the trend calculation.
+            N (int): The number of data points to generate.
+
+        Returns:
+            Tuple[np.ndarray, np.ndarray]: A tuple containing two numpy arrays:
+                - The time values from 0 to N-1.
+                - The trend values calculated based on the given type, coefficients, and time values.
+        """
         time_values = np.arange(0, N)
 
         trend_dict = {
@@ -27,6 +45,18 @@ class Model:
     def combined_trend(
         self, types: List[str], a: int, b: int, N: int
     ) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        Compute the combined trend values based on the given types and parameters.
+
+        Parameters:
+            types (List[str]): The list of trend types.
+            a (int): The parameter 'a' for trend calculations.
+            b (int): The parameter 'b' for trend calculations.
+            N (int): The number of time values.
+
+        Returns:
+            Tuple[np.ndarray, np.ndarray]: A tuple containing the time values and the combined trend values.
+        """
         time_values = np.arange(0, N)
         combined_trend_values = np.zeros(N)
 
@@ -111,3 +141,36 @@ class Model:
         values1 = data1[:min_len]
         values2 = data2[:min_len]
         return values1 * values2
+
+    def convolModel(self, first_values, second_values, M):
+        N = min(len(first_values), len(second_values))
+        first_values = first_values[:N]
+        second_values = second_values[:N]
+
+        convolution_data = np.convolve(first_values, second_values)[: N + M - 1]
+        convolution_data = convolution_data[M // 2 : -M // 2]
+
+        return convolution_data
+
+    def descending_exponential_trend(
+        self, n: int, a: float, b: float, dt: float
+    ) -> np.ndarray:
+        k = np.arange(0, n)
+        trend_values = b * np.exp(-a * k * dt)
+        return trend_values
+
+    def convol_model(self, x, h, N, M):
+        out_data = []
+        for k in range(N):
+            y = 0
+            for m in range(M):
+                y += x[k - m] * h[m]
+            out_data.append(y)
+        return out_data
+
+    def rhythm(self, N, M, R, Rs):
+        x_t = [
+            random.random() * 2 * Rs + (R - Rs) if i % M == 0 and i != 0 else 0
+            for i in range(N)
+        ]
+        return x_t

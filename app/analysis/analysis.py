@@ -78,10 +78,7 @@ class Analysis:
         return pd.DataFrame({"L": l_values, "CCF": ccf_values})
 
     def fourier(self, data: np.ndarray) -> pd.DataFrame:
-        # Выполнение прямого преобразования Фурье
         fourier_transform = np.fft.fft(data)
-
-        # Вычисление амплитудного спектра
         amplitude_spectrum = np.abs(fourier_transform)
 
         return pd.DataFrame(
@@ -92,6 +89,18 @@ class Analysis:
             }
         )
 
+    def fourier_proc(self, data):
+        N = len(data)
+        freqs = np.arange(N)
+        cos_vals = np.cos(2 * np.pi * np.outer(freqs, freqs) / N)
+        sin_vals = np.sin(2 * np.pi * np.outer(freqs, freqs) / N)
+        Re_Xn = np.dot(data, cos_vals)
+        Im_Xn = np.dot(data, sin_vals)
+        Re_Xn /= N
+        Im_Xn /= N
+        Xn = np.sqrt((Re_Xn**2) + (Im_Xn**2))
+        return Xn.tolist()
+
     def spectr_fourier(self, data: np.ndarray, dt: float) -> pd.DataFrame:
         n = len(data) // 2
         fourier_data = self.fourier(data)
@@ -101,6 +110,14 @@ class Analysis:
         frequencies = np.arange(n) * delta_f
 
         return pd.DataFrame({"f": frequencies, "|Xn|": xn_values[:n]})
+
+    def spectrFourier(self, X_n, N, dt):
+        out_data = []
+        f_border = 1 / (2 * dt)
+        df = 2 * f_border / N
+        for i in range(N):
+            out_data.append(X_n[i] * df)
+        return out_data
 
     def spectr_fourier_window(
         self, data: np.ndarray, dt: float, L: int
@@ -116,3 +133,19 @@ class Analysis:
         frequencies = np.arange(n) * delta_f
 
         return pd.DataFrame({"f": frequencies, "|Xn|": xn_values[:n]})
+
+    def frequencyResponse(self, data, N):
+        out_data = []
+        furier = self.fourier_proc(data)
+        for i in range(N):
+            out_data.append(furier[i] * N)
+        return out_data
+
+    def convolution(self, x, h, N, M):
+        out_data = []
+        for i in range(N):
+            y = 0
+            for j in range(M):
+                y += x[i - j] * h[j]
+            out_data.append(y)
+        return out_data

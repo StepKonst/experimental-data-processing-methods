@@ -9,13 +9,13 @@ icon = "📈"
 is_section = true
 
 [[pages]]
-path = "app/pages/trends.py"
-name = "Графики трендов"
+path = "app/pages/trends/trends.py"
+name = "Визуализация трендовых данных"
 icon = "🟡"
 
 [[pages]]
-path = "app/pages/combined_trends.py"
-name = "Комбинированные тренды"
+path = "app/pages/trends/combined_trends.py"
+name = "Кусочная функция"
 icon = "🟡"
 
 [[pages]]
@@ -24,17 +24,22 @@ icon = "🎧"
 is_section = true
 
 [[pages]]
-path = "app/pages/noise.py"
+path = "app/pages/noises/noise.py"
 name = "Случайный шум"
 icon = "🔴"
 
 [[pages]]
-path = "app/pages/simple_noise.py"
+path = "app/pages/noises/anti_noise.py"
+name = "Подавление шума"
+icon = "🔴"
+
+[[pages]]
+path = "app/pages/noises/simple_noise.py"
 name = "Шум с помощью несложного генератора"
 icon = "🔴"
 
 [[pages]]
-path = "app/pages/emission.py"
+path = "app/pages/noises/emission.py"
 name = "Выброс"
 icon = "🔴"
 
@@ -44,41 +49,71 @@ icon = "☯️"
 is_section = true
 
 [[pages]]
-path = "app/pages/harm_process.py"
+path = "app/pages/different_processes/harm_process.py"
 name = "Гармонический процесс"
 icon = "🔵"
 
 [[pages]]
-path = "app/pages/polyharm_process.py"
+path = "app/pages/different_processes/polyharm_process.py"
 name = "Полигармонический процесс"
 icon = "🔵"
 
 [[pages]]
-name = "Анализ .dat файла"
+name = "Работа с файлами"
 icon = "🗄️"
 is_section = true
 
 [[pages]]
-path = "app/pages/volume.py"
+path = "app/pages/file_analysis/volume.py"
 name = "Чтение файла"
 icon = "🟢"
 
 [[pages]]
-name = "Аддитивная модель"
+path = "app/pages/file_analysis/filter.py"
+name = "Фильтрация"
+icon = "🟢"
+
+[[pages]]
+path = "app/pages/file_analysis/waw_files.py"
+name = "Обработка .wav файлов"
+icon = "🟢"
+
+[[pages]]
+name = "Аддитивная/Мультипликативная модель"
 icon = "🔄"
 is_section = true
 
 [[pages]]
-path = "app/pages/additive_model.py"
+path = "app/pages/additive_models/additive_model.py"
 name = "Аддитивная модель трендов с другими процессами"
 icon = "🟣"
 
 [[pages]]
-path = "app/pages/anti_spike.py"
+path = "app/pages/additive_models/anti_spike.py"
 name = "Подавление выбросов"
 icon = "🟣"
 
 [[pages]]
-path = "app/pages/linear_additive_model.py"
+path = "app/pages/additive_models/linear_additive_model.py"
 name = "Удаление трендов"
 icon = "🟣"
+
+[[pages]]
+path = "app/pages/additive_models/noise_harm.py"
+name = "Удаления тренда в шуме и гармоническом процессе"
+icon = "🟣"
+
+[[pages]]
+name = "Пульс"
+icon = "💓"
+is_section = true
+
+[[pages]]
+path = "app/pages/multi_models/cardiogram.py"
+name = "Кардиограмма"
+icon = "🟠"
+
+[[pages]]
+path = "app/pages/multi_models/pulse.py"
+name = "Импульсная реакция"
+icon = "🟠"

@@ -38,7 +38,7 @@ def main():
 
     st.sidebar.divider()
     st.sidebar.subheader("Настройки нелинейного тренда")
-    non_linear_trend_data = model_utils.get_nonlinear_trend(n_value=100)
+    non_linear_trend_data = model_utils.get_nonlinear_trend(n_value=1000)
 
     st.sidebar.subheader("Настройка полигармонического процесса")
     polyharm_n_value, a_f_values, polyharm_delta_t = model_utils.get_polyharm_value()
