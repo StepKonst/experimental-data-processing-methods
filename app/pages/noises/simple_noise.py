@@ -32,7 +32,9 @@ def main():
 
     st.sidebar.success(f"Выбранный отрезок: [{segment[0]}, {segment[1]}]")
 
-    model_utils.plot_line_chart(data, "Время", "Значение шума", "red")
+    model_utils.plot_line_chart(
+        range(len(data)), data, "Время", "Значение шума", "red", width=1
+    )
 
     statistical_characteristics = analysis.statistics(data)
     model_utils.get_dataframe(statistical_characteristics)
@@ -48,7 +50,14 @@ def main():
     st.divider()
     st.markdown("#### Данные после удаления в них смещения")
     anti_shift_data = processing.antishift(data=data)
-    model_utils.plot_line_chart(anti_shift_data, "Время", "Значение шума", "red")
+    model_utils.plot_line_chart(
+        range(len(anti_shift_data)),
+        anti_shift_data,
+        "Время",
+        "Значение шума",
+        "red",
+        width=1,
+    )
 
     st.divider()
     analysis_utils.distribution_density(data, "red")

@@ -37,14 +37,26 @@ def main():
     st.subheader("Данные аддитивной модели случайного шума и гармонического процесса")
 
     model_utils.plot_line_chart(
-        addmodel_noise_harm, "Время", "Значение аддитивной модели", "purple"
+        range(len(addmodel_noise_harm)),
+        addmodel_noise_harm,
+        "Время",
+        "Значение аддитивной модели",
+        "fuchsia",
+        width=2,
     )
 
     st.subheader("Данные после удаления линейного тренда")
 
     result = processing.antitrendlinear(addmodel_noise_harm)
 
-    model_utils.plot_line_chart(result, "Время", "Значение аддитивной модели", "purple")
+    model_utils.plot_line_chart(
+        range(len(result)),
+        result,
+        "Время",
+        "Значение аддитивной модели",
+        "fuchsia",
+        width=2,
+    )
 
     st.sidebar.markdown("---")
     st.sidebar.write("© 2023 StepKonst. Все права защищены.")

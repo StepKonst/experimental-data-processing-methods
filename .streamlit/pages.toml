@@ -64,13 +64,23 @@ icon = "🗄️"
 is_section = true
 
 [[pages]]
+path = "app/pages/file_analysis/ekzamen.py"
+name = "Экзамен"
+icon = "💻"
+
+[[pages]]
 path = "app/pages/file_analysis/volume.py"
-name = "Чтение файла"
+name = "Чтение файла .dat"
 icon = "🟢"
 
 [[pages]]
-path = "app/pages/file_analysis/filter.py"
-name = "Фильтрация"
+path = "app/pages/file_analysis/records_wav.py"
+name = "Запись голоса"
+icon = "🟢"
+
+[[pages]]
+path = "app/pages/file_analysis/speech.py"
+name = "Работа с голосом"
 icon = "🟢"
 
 [[pages]]
@@ -116,4 +126,9 @@ icon = "🟠"
 [[pages]]
 path = "app/pages/multi_models/pulse.py"
 name = "Импульсная реакция"
+icon = "🟠"
+
+[[pages]]
+path = "app/pages/multi_models/filter.py"
+name = "Фильтрация"
 icon = "🟠"

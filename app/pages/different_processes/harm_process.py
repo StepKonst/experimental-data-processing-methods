@@ -33,7 +33,14 @@ def main():
         sys.exit()
 
     st.markdown("#### Гармонический процесс")
-    model_utils.plot_line_chart(harm_data, "Время", "Значение", "blue")
+    model_utils.plot_line_chart(
+        param1=range(len(harm_data)),
+        param2=harm_data,
+        x_label="Время",
+        y_label="Значение",
+        color="blue",
+        width=2,
+    )
 
     st.divider()
     analysis_utils.distribution_density(harm_data, "blue")

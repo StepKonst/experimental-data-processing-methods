@@ -28,11 +28,11 @@ def main():
     st.sidebar.title("Настройки")
 
     n_value = st.sidebar.number_input(
-        "Выберите значение N", min_value=1, max_value=100000, step=1, value=10000
+        "Выберите значение N", min_value=1, max_value=100000, step=1, value=1000
     )
 
     r_value = st.sidebar.number_input(
-        "Выберите значение R", min_value=1.0, max_value=5000.0, step=0.5, value=1000.0
+        "Выберите значение R", min_value=1.0, max_value=5000.0, step=0.5, value=100.0
     )
 
     st.sidebar.markdown("---")
@@ -48,7 +48,9 @@ def main():
         anti_noise = processing.antiNoise(noise, n_value, M)
         std_deviation = np.std(anti_noise)
 
-        model_utils.plot_line_chart(anti_noise, "Время", "Значение шума", "red")
+        model_utils.plot_line_chart(
+            range(len(anti_noise)), anti_noise, "Время", "Значение шума", "red", width=1
+        )
 
         st.markdown(f"**Стандартное отклонение равно:** {std_deviation:.4f}")
 

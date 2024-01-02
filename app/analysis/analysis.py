@@ -6,7 +6,8 @@ from scipy.stats import kurtosis, skew
 
 
 class Analysis:
-    def statistics(self, data: np.ndarray) -> dict:
+    @staticmethod
+    def statistics(data: np.ndarray) -> dict:
         return {
             "Минимальное значение": np.min(data),
             "Максимальное значение": np.max(data),
@@ -21,7 +22,8 @@ class Analysis:
             "Среднеквадратическая ошибка": np.sqrt(np.mean(data**2)),
         }
 
-    def stationarity(self, data: np.ndarray, M: int) -> str:
+    @staticmethod
+    def stationarity(data: np.ndarray, M: int) -> str:
         data = abs(data)
         segments = np.array_split(data, M)
         means = [np.mean(segment) for segment in segments]
@@ -36,13 +38,15 @@ class Analysis:
 
         return "Процесс стационарный"
 
-    def hist(self, data: np.ndarray, M: int) -> pd.DataFrame:
+    @staticmethod
+    def hist(data: np.ndarray, M: int) -> pd.DataFrame:
         hist, bins = np.histogram(data, M, density=True)
         bin_center = (bins[:-1] + bins[1:]) / 2
 
         return pd.DataFrame({"x": bin_center, "y": hist})
 
-    def acf(self, data: np.ndarray, function_type: str) -> pd.DataFrame:
+    @staticmethod
+    def acf(data: np.ndarray, function_type: str) -> pd.DataFrame:
         data_mean = np.mean(data)
         n = len(data)
         l_values = np.arange(0, n)
@@ -63,7 +67,8 @@ class Analysis:
 
         return pd.DataFrame({"L": l_values, "AC": ac_values})
 
-    def ccf(self, datax: np.ndarray, datay: np.ndarray) -> pd.DataFrame:
+    @staticmethod
+    def ccf(datax: np.ndarray, datay: np.ndarray) -> pd.DataFrame:
         if len(datax) != len(datay):
             raise ValueError("Длины входных данных не совпадают")
 
@@ -77,7 +82,8 @@ class Analysis:
 
         return pd.DataFrame({"L": l_values, "CCF": ccf_values})
 
-    def fourier(self, data: np.ndarray) -> pd.DataFrame:
+    @staticmethod
+    def fourier(data: np.ndarray) -> pd.DataFrame:
         fourier_transform = np.fft.fft(data)
         amplitude_spectrum = np.abs(fourier_transform)
 
@@ -89,7 +95,8 @@ class Analysis:
             }
         )
 
-    def fourier_proc(self, data):
+    @staticmethod
+    def fourier_proc(data):
         N = len(data)
         freqs = np.arange(N)
         cos_vals = np.cos(2 * np.pi * np.outer(freqs, freqs) / N)
@@ -111,7 +118,8 @@ class Analysis:
 
         return pd.DataFrame({"f": frequencies, "|Xn|": xn_values[:n]})
 
-    def spectrFourier(self, X_n, N, dt):
+    @staticmethod
+    def spectrFourier(X_n, N, dt):
         out_data = []
         f_border = 1 / (2 * dt)
         df = 2 * f_border / N
@@ -139,13 +147,4 @@ class Analysis:
         furier = self.fourier_proc(data)
         for i in range(N):
             out_data.append(furier[i] * N)
-        return out_data
-
-    def convolution(self, x, h, N, M):
-        out_data = []
-        for i in range(N):
-            y = 0
-            for j in range(M):
-                y += x[i - j] * h[j]
-            out_data.append(y)
         return out_data

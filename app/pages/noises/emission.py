@@ -21,7 +21,14 @@ def main():
     emission_data = model.spikes(n_value, m_value, r_value, rs_value)[0]
 
     st.markdown("#### Данные выброса")
-    model_utils.plot_line_chart(emission_data, "Время", "Значение выброса", "red")
+    model_utils.plot_line_chart(
+        param1=range(len(emission_data)),
+        param2=emission_data,
+        x_label="Время",
+        y_label="Значение выброса",
+        color="red",
+        width=2,
+    )
 
 
 if __name__ == "__main__":

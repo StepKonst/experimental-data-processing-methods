@@ -57,18 +57,32 @@ def main():
     addmodel_non_linear_polyharm = model.add_model(non_linear_trend_data, polyharm_data)
 
     st.subheader("Данные аддитивной модели линейного тренда и гармонического процесса")
-    model_utils.plot_line_chart(addmodel_linear_harm, "Время", "Значение", "purple")
+    model_utils.plot_line_chart(
+        range(len(addmodel_linear_harm)),
+        addmodel_linear_harm,
+        "Время",
+        "Значение",
+        "fuchsia",
+        width=2,
+    )
 
     st.subheader("Данные после удаления линейного тренда")
     harm_process = processing.antitrendlinear(addmodel_linear_harm)
-    model_utils.plot_line_chart(harm_process, "Время", "Значение", "purple")
+    model_utils.plot_line_chart(
+        range(len(harm_process)), harm_process, "Время", "Значение", "fuchsia", width=2
+    )
 
     st.divider()
     st.subheader(
         "Данные аддитивной модели нелинейного тренда и полигармонического процесса"
     )
     model_utils.plot_line_chart(
-        addmodel_non_linear_polyharm, "Время", "Значение", "purple"
+        range(len(addmodel_non_linear_polyharm)),
+        addmodel_non_linear_polyharm,
+        "Время",
+        "Значение",
+        "fuchsia",
+        width=2,
     )
 
     st.subheader("Данные после удаления нелинейного тренда")
@@ -76,7 +90,14 @@ def main():
     polyharm_process = processing.antitrendnonlinear(
         addmodel_non_linear_polyharm, w_value
     )
-    model_utils.plot_line_chart(polyharm_process, "Время", "Значение", "purple")
+    model_utils.plot_line_chart(
+        range(len(polyharm_process)),
+        polyharm_process,
+        "Время",
+        "Значение",
+        "fuchsia",
+        width=2,
+    )
 
     st.sidebar.markdown("---")
     st.sidebar.write("© 2023 StepKonst. Все права защищены.")

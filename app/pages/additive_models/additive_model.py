@@ -49,18 +49,22 @@ def main():
         "#### Данные аддитивной модели линейного тренда и гармонического процесса"
     )
     model_utils.plot_line_chart(
+        range(len(addmodel1)),
         addmodel1,
         "Время",
         "Значение аддитивной модели",
-        color="purple",
+        color="fuchsia",
+        width=2,
     )
 
     st.markdown("#### Данные аддитивной модели нелинейного тренда и шума")
     model_utils.plot_line_chart(
+        range(len(addmodel2)),
         addmodel2,
         "Время",
         "Значение аддитивной модели",
-        color="purple",
+        color="fuchsia",
+        width=2,
     )
 
     multimodel1 = model.multi_model(linear_trend_data, harm_data)
@@ -71,18 +75,22 @@ def main():
         "#### Данные мультипликативной модели линейного тренда и гармонического процесса"
     )
     model_utils.plot_line_chart(
+        range(len(multimodel1)),
         multimodel1,
         "Время",
         "Значение мультипликативной модели",
-        color="purple",
+        color="fuchsia",
+        width=2,
     )
 
     st.markdown("#### Данные мультипликативной модели нелинейного тренда и шума")
     model_utils.plot_line_chart(
+        range(len(multimodel2)),
         multimodel2,
         "Время",
         "Значение мультипликативной модели",
-        color="purple",
+        color="fuchsia",
+        width=2,
     )
 
     st.sidebar.markdown("---")

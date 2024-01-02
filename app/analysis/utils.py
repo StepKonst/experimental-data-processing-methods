@@ -35,8 +35,8 @@ def distribution_density(data: np.ndarray, color: str):
 
 def plot_cross_correlation(data, x_label, y_label, color="blue"):
     fig = px.line(
-        x=data.index,
-        y=data["CCF"],
+        x=data.index[1:],
+        y=data["CCF"][1:],
         labels={"x": x_label, "y": y_label},
     )
     fig.update_traces(line=dict(color=color, width=2))
@@ -50,8 +50,8 @@ def plot_cross_correlation(data, x_label, y_label, color="blue"):
 
 def plot_autocorrelation(data, x_label, y_label, color="blue"):
     fig = px.line(
-        x=data.index,
-        y=data["AC"],
+        x=data.index[1:],
+        y=data["AC"][1:],
         labels={"x": x_label, "y": y_label},
     )
     fig.update_traces(line=dict(color=color, width=2))

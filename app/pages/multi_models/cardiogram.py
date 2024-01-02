@@ -67,13 +67,24 @@ def main():
     convolution = model.convolModel(rhythm, heart_impulse, M=200)
 
     st.subheader("Управляющая функция ритма")
-    model_utils.plot_line_chart(rhythm, "Время", "Амплитуда", "blue")
+    model_utils.plot_line_chart(
+        range(len(rhythm)), rhythm, "Время", "Амплитуда", "blue", width=2
+    )
 
     st.subheader("Импульсная реакция модели сердечной мышцы")
-    model_utils.plot_line_chart(heart_impulse, "Время", "Амплитуда", "orange")
+    model_utils.plot_line_chart(
+        range(len(heart_impulse)),
+        heart_impulse,
+        "Время",
+        "Амплитуда",
+        "darkorange",
+        width=2,
+    )
 
     st.subheader("Результат свертки")
-    model_utils.plot_line_chart(convolution, "Время", "Амплитуда", "green")
+    model_utils.plot_line_chart(
+        range(len(convolution)), convolution, "Время", "Амплитуда", "green", width=2
+    )
 
     st.title("Патологическая кардиограмма")
     noise_data = model.noise(n_value, 0.001)[1]
@@ -84,10 +95,14 @@ def main():
     convolution = model.convolModel(rhythm, heart_impulse, M=200)
 
     st.subheader("Управляющая функция ритма")
-    model_utils.plot_line_chart(rhythm, "Время", "Амплитуда", "blue")
+    model_utils.plot_line_chart(
+        range(len(rhythm)), rhythm, "Время", "Амплитуда", "blue", width=2
+    )
 
     st.subheader("Результат свертки")
-    model_utils.plot_line_chart(convolution, "Время", "Амплитуда", "green")
+    model_utils.plot_line_chart(
+        range(len(convolution)), convolution, "Время", "Амплитуда", "green", width=2
+    )
 
     st.sidebar.markdown("---")
     st.sidebar.write("© 2023 StepKonst. Все права защищены.")

@@ -96,10 +96,12 @@ def main():
 
     st.subheader("Аддитивная модель данных шума и выброса")
     model_utils.plot_line_chart(
+        range(len(additive_noise_emission)),
         additive_noise_emission,
         "Время",
         "Значение аддитивной модели",
-        "purple",
+        "fuchsia",
+        width=2,
     )
 
     st.subheader(
@@ -110,19 +112,23 @@ def main():
     )
     anti_spike_noise = processing.antispike(additive_noise_emission, range_noise)
     model_utils.plot_line_chart(
+        range(len(anti_spike_noise)),
         anti_spike_noise,
         "Время",
         "Значение аддитивной модели",
-        "purple",
+        "fuchsia",
+        width=2,
     )
 
     st.divider()
     st.subheader("Аддитивная модель данных гармонического процесса и выброса")
     model_utils.plot_line_chart(
+        range(len(additive_harm_emission)),
         additive_harm_emission,
         "Время",
         "Значение аддитивной модели",
-        "purple",
+        "fuchsia",
+        width=2,
     )
 
     st.subheader(
@@ -133,10 +139,12 @@ def main():
     )
     anti_spike_harm = processing.antispike(additive_harm_emission, range_harm)
     model_utils.plot_line_chart(
+        range(len(anti_spike_harm)),
         anti_spike_harm,
         "Время",
         "Значение аддитивной модели",
-        "purple",
+        "fuchsia",
+        width=2,
     )
 
     st.sidebar.markdown("---")

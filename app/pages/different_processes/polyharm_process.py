@@ -34,7 +34,14 @@ def main():
         sys.exit()
 
     st.markdown("#### Полигармонический процесс")
-    model_utils.plot_line_chart(polyharm_data, "Время", "Значение", "blue")
+    model_utils.plot_line_chart(
+        param1=range(len(polyharm_data)),
+        param2=polyharm_data,
+        x_label="Время",
+        y_label="Значение",
+        color="blue",
+        width=2,
+    )
 
     st.divider()
     analysis_utils.distribution_density(polyharm_data, "blue")
